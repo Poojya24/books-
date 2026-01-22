@@ -7,14 +7,14 @@ const getBooks = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  console.log("GET /api/books hit");
+  
 };
 
 const getBooksbyId = async (req, res) => {
   try {
     const { id } = req.params;
     const book = await Book.findById(id);
-    if (!book) { return res.status(400).json({ error: "book not found by id" }) }
+    if (!book) { return res.status(404).json({ error: "book not found by id" }) }
     res.status(200).json(book);
 
 
@@ -42,7 +42,7 @@ const deleteBookbyId = async (req, res) => {
   }
   catch (error) {
 
-    res.status(400).json({ error: error.message })
+    res.status(500).json({ error: error.message })
 
 
   }
@@ -60,10 +60,11 @@ const deleteBookbyId = async (req, res) => {
         const book = await Book.findByIdAndUpdate(id, req.body, { new: true });
         
         if (!book) { return res.status(400).json({ error: "book not found" }) ;
-    }res.status(200).json(book);
+    }
+      res.status(200).json(book);
 
 
-      } catch (error) {res.status(400).json({error:error.message})
+      } catch (error) {res.status(500).json({error:error.message})
       
     }
       
