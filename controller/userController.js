@@ -11,6 +11,7 @@ const createToken = (id) => {
 
   const signupUser = async (req, res) => {
   try {
+   console.log("🔥 SIGNUP ROUTE HIT", req.body);
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
