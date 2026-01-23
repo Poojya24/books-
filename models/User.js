@@ -1,30 +1,25 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt")
+ const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
+console.log("✅ LOADED User model from models/User.js");
 
 const userSchema = new mongoose.Schema(
-    {
-        name: {
-      type: String,
-      required: true
-    },
-        email:{
-    type: String,
-    required: true,
-    unique: true
-},
-
-    password:{
-    type: String,
-    required: true
-}}, 
-     {
-        timestamps:true}
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+  },
+  { timestamps: true }
 );
-   // pre-save password hashing        
-   userSchema.pre("save",async function(next){
-    if(!this.isModified("password"))return next();
-    const salt= await bcrypt.genSalt(10);
-    this.password= await bcrypt.hash(this.password,salt);
-    next();
-   })
- module.exports = mongoose.model("User", userSchema);
+
+// 🔥 NO next(), NO arrow function
+userSchema.pre("save", async function () {
+  console.log("🔥 PRE SAVE HOOK RUNNING");
+
+  if (!this.isModified("password")) return;
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+module.exports = mongoose.model("User", userSchema);
