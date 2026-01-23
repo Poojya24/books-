@@ -33,9 +33,13 @@ const createToken = (id) => {
         email: user.email
       }
     });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  }  catch (error) {
+  console.error("SIGNUP ERROR 👉", error);
+  res.status(500).json({
+    message: error.message,
+    stack: error.stack
+  });
+}
 };
 
 const loginUser = async (req, res) => {
